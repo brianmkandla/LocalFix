@@ -36,6 +36,45 @@ public class ServiceRequestService
         _requests.Add(request);
         return request;
     }
+
+    // Retrieve a request by ID
+    public ServiceRequest GetById(int id)
+    {
+       return _requests.First(request => request.Id == id);
+    }
+
+    // Retrieve requests by category
+    public List<ServiceRequest> GetByCategory(string category)
+    {
+        return _requests.Where(request => request.Category == category).ToList();
+    } 
+
+    // Retrieve requests by status
+    public List<ServiceRequest> GetByStatus(RequestStatus status)
+    {
+        return _requests.Where(request => request.Status == status).ToList();
+    }
+
+    // Updates a request using specified ID
+    public void UpdateRequest(int id, string newTitle, string newDescription, string newCategory, RequestStatus newStatus)
+    {
+        // Avoids duplicate logic across different methods
+        ServiceRequest request = GetById(id);
+
+        request.Title = newTitle;
+        request.Description = newDescription;
+        request.Category = newCategory;
+        request.Status = newStatus;
+    }
+
+    // Delete a request using a specified ID
+    public void DeleteRequest(int id)
+    {
+        // Avoids duplicate logic across different methods
+        ServiceRequest request = GetById(id);
+
+        _requests.Remove(request);
+    }
 }
 
     
