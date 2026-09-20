@@ -1,4 +1,5 @@
-using LocalFix.Api.Services; 
+using LocalFix.Api.Endpoints; 
+using LocalFix.Api.Services;
 using LocalFix.Api.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,19 +20,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/requests", (ServiceRequestService service) =>
-{
-    // handler function
-    return service.GetAllRequests(); 
-});
-
-
-app.MapPost("/api/requests", (ServiceRequestService service, CreateServiceRequestDto requestDto) =>
-{
-    var request = service.CreateRequest(requestDto.Title, requestDto.Category, requestDto.Description);
-
-    return Results.Created($"/api/requests/{request.Id}", request);
-});
-
+app.MapWebApplication();
 
 app.Run();

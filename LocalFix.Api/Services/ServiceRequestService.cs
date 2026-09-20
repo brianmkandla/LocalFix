@@ -38,9 +38,9 @@ public class ServiceRequestService
     }
 
     // Retrieve a request by ID
-    public ServiceRequest GetById(int id)
+    public ServiceRequest? GetById(int id)
     {
-       return _requests.First(request => request.Id == id);
+       return _requests.FirstOrDefault(request => request.Id == id);
     }
 
     // Retrieve requests by category
