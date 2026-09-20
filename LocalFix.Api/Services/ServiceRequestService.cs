@@ -56,24 +56,37 @@ public class ServiceRequestService
     }
 
     // Updates a request using specified ID
-    public void UpdateRequest(int id, string newTitle, string newDescription, string newCategory, RequestStatus newStatus)
+    public ServiceRequest? UpdateRequest(int id, string newTitle, string newDescription, string newCategory, RequestStatus newStatus)
     {
         // Avoids duplicate logic across different methods
-        ServiceRequest request = GetById(id);
+        ServiceRequest? request = GetById(id);
+
+        if (request is null)
+        {
+            return null;
+        }
 
         request.Title = newTitle;
         request.Description = newDescription;
         request.Category = newCategory;
         request.Status = newStatus;
+
+        return request;
     }
 
     // Delete a request using a specified ID
-    public void DeleteRequest(int id)
+    public bool DeleteRequest(int id)
     {
         // Avoids duplicate logic across different methods
-        ServiceRequest request = GetById(id);
+        ServiceRequest? request = GetById(id);
+
+        if (request is null)
+        {
+            return false;
+        }
 
         _requests.Remove(request);
+        return true;
     }
 }
 

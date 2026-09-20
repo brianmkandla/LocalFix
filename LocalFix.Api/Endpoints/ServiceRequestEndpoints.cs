@@ -33,5 +33,31 @@ public static class ServiceRequestEndpoints
             
             return Results.Ok(serviceRequest);
         }) ;
+
+        // 
+        app.MapPut("/api/requests/{id}", (ServiceRequestService service, int id, UpdateServiceRequestDto requestDto) =>
+        {
+            var request = service.UpdateRequest(id, requestDto.Title, requestDto.Description, requestDto.Category, requestDto.Status);
+
+            if (request is null)
+            {
+                return Results.NotFound(new { message = $"Request with ID {id} not found." });
+            }
+
+            return Results.Ok(request);
+        });
+
+        // Delete endpoint
+        app.MapDelete("/api/requests/{id}", (ServiceRequestService service, int id) =>
+        {
+            var requestDel = service.DeleteRequest(id);
+
+            if (requestDel is false)
+            {
+                return Results.NotFound(new { message = $"Request with ID {id} not found." });
+            }
+
+            return Results.NoContent();
+        });
     }
 }
