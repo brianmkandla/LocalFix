@@ -11,4 +11,18 @@ public class LocalFixDbContext : DbContext
     }
 
     public DbSet<ServiceRequest>  ServiceRequests { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder ModelBuilder)
+    {
+        ModelBuilder.Entity<ServiceRequest>(entity => 
+        {
+           entity.ToTable("ServiceRequests"); // table name
+
+           entity.HasKey(r => r.Id); // primary key
+
+           entity.Property(r => r.Id)
+                 .HasColumnName("RequestID");
+        });
+    }
+    
 }

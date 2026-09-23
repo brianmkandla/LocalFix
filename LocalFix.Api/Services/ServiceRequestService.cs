@@ -1,15 +1,21 @@
 using LocalFix.Api.Models;
+using LocalFix.Api.Data;
 
 namespace LocalFix.Api.Services;
 
 public class ServiceRequestService
 {
     private readonly List<ServiceRequest> _requests = [];
+    private readonly LocalFixDbContext _dbContext;
+    public ServiceRequestService(LocalFixDbContext dbContext)
+    {
+        this._dbContext = dbContext;
+    }
 
     // Returns a list of all service requests
     public List<ServiceRequest> GetAllRequests()
     {
-        return _requests;
+        return _dbContext.ServiceRequests.ToList();
     }
 
     // Creates and returns service request
@@ -33,7 +39,10 @@ public class ServiceRequestService
 
         request.Status = RequestStatus.Open;
 
-        _requests.Add(request);
+        // Add to database and save 
+        _dbContext.ServiceRequests.Add(request);
+        _dbContext.SaveChanges();
+
         return request;
     }
 
