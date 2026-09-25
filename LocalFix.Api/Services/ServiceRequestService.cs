@@ -49,7 +49,7 @@ public class ServiceRequestService
     // Retrieve a request by ID
     public ServiceRequest? GetById(int id)
     {
-       return _requests.FirstOrDefault(request => request.Id == id);
+       return _dbContext.ServiceRequests.FirstOrDefault(request => request.Id == id);
     }
 
     // Retrieve requests by category
@@ -80,6 +80,8 @@ public class ServiceRequestService
         request.Category = newCategory;
         request.Status = newStatus;
 
+        _dbContext.SaveChanges();
+
         return request;
     }
 
@@ -94,7 +96,8 @@ public class ServiceRequestService
             return false;
         }
 
-        _requests.Remove(request);
+        _dbContext.ServiceRequests.Remove(request);
+        _dbContext.SaveChanges();
         return true;
     }
 }
